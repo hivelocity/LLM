@@ -5,14 +5,17 @@ These steps are adapted for Ubuntu 22.04
     - Purge all drivers
 
           sudo dpkg --purge *nvidia*
+
     - Check `dpkg` if anything nvidia is leftover. I had one remaining one left during test
 
           dpkg -l | grep nvidia
+
         - You may get output that looks something like this (don't expect yours to match):
 
               $ dpkg -l | grep -i nvidia
               ii  libnvidia-example1:amd64                                  1.14.3-1                                                       amd64        NVIDIA container runtime library
               rc  nvidia-example2                                           1.14.3-1                                                       amd64        NVIDIA Container Toolkit Base
+
             - Packages mentioned here should only be removed if they mention `nvidia` in its entirety, packages like
               `nouveau` should be left alone.
             - Here I would run `sudo apt remove --purge libnvidia-example1:amd64` and repeat for `nvidia-example2`. Copy
@@ -21,6 +24,7 @@ These steps are adapted for Ubuntu 22.04
     - Autoremove to remove anything else
 
           sudo apt autoremove
+
     - Reboot and in the shell type `nv` and hit tab to make sure there no nvidia executables. At time of testing only
       one executable came up, and that was `nvidia-detect` which is part of ubuntu so this was fine.
 
@@ -62,6 +66,7 @@ during testing
     - Remove conflicting packages:
 
           for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done```
+
     - Install setup docker APT repo:
 
           # Add Docker's official GPG key:
@@ -77,12 +82,15 @@ during testing
             $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
             sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
           sudo apt-get update
+
     - Install latest version:
     
           sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
     - Test docker with
 
           docker run --rm ubuntu:latest echo hello
+
     - Versions installed when readme was written:
 
           $ dpkg -l | grep -i docker
@@ -100,24 +108,30 @@ during testing
               && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
                 sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
                 sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
    - Update package list
 
             sudo apt-get update
+
    - Install the NVIDIA Container Toolkit packages
 
             sudo apt-get install -y nvidia-container-toolkit
+
    - Configure applicable runtimes (docker and containerd were the only ones applicable at time of writing readme):
      - Docker:
        - Configure:
 
               sudo nvidia-ctk runtime configure --runtime=docker
+
        - Restart docker:
 
               sudo systemctl restart containerd
+
      - containerd:
        - Configure
 
                 sudo nvidia-ctk runtime configure --runtime=crio
+
        - Restart containerd
 
                 sudo systemctl restart containerd
