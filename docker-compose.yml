@@ -1,0 +1,18 @@
+version: '3'
+services:
+  torch:
+    container_name: torch
+    restart: 'no'
+    build:
+        context: ./docker
+        dockerfile: torch.dockerfile
+    volumes:
+        - './prompt.py:/prompt.py'
+        - './models:/models'
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
