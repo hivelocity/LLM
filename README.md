@@ -138,8 +138,13 @@ during testing
 
 The `docker-compose.yml` should already specify GPU device access so build with:
 
-    docker-compose build
+    docker compose build
 
+Newer versions of docker have deprecated `docker-compose` in favor of the `docker compose` subcommand, so make sure
+you use that verison in case you get an error like this:
+
+    ERROR: The Compose file './docker-compose.yml' is invalid because:
+    services.torch.deploy.resources.reservations value Additional properties are not allowed ('devices' was unexpected)
 
 Put your model files in the model directory like [Mistral Orca](https://huggingface.co/Open-Orca/Mistral-7B-OpenOrca)
 
