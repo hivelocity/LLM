@@ -170,14 +170,14 @@ May take a while (~14 GB). Latest commit of model repository was 4a37328cef00f52
 
 `cd ..`  back up to main directroy and test model inference with prompt script:
 
-    docker-compose run --rm torch /prompt.py -l 2048 --half
+    docker compose run --rm torch /prompt.py -l 2048 --half
 
 `--half` is needed for this specific model since it's larger than available VRAM on a 4090 (24GB) `-l 2048` sets
 max generated token length
 
 Example output:
 
-    docker-compose run --rm torch /prompt.py -l 2048 --half
+    docker compose run --rm torch /prompt.py -l 2048 --half
     Creating llm-test_torch_run ... done
     Namespace(model='/models/Mistral-7B-OpenOrca', half=True, prompt='A chat.', max_length=2048)
     BasicConfig(max_length=2048, temperature=1.1, top_p=0.95, repetition_penalty=1.0)
@@ -201,4 +201,4 @@ Example output:
 Note: If there is only one model in the `models` directory, you don't have to specify the path, but if using multiple models,
 you may need the `--model` or `-m` switch to specify your model path like:
 
-    docker-compose run --rm torch -m /models/llama.cpp /prompt.py -l 2048 --half
+    docker compose run --rm torch -m /models/llama.cpp /prompt.py -l 2048 --half
