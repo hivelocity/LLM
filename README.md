@@ -1,7 +1,30 @@
 ## Installing nvidia container runtime
 These steps are adapted for Ubuntu 22.04
 
-1. Install NVIDIA drivers
+1. Remove existing drivers if current ones are old or unapplicable:
+    - Purge all drivers
+
+          sudo dpkg --purge *nvidia*
+    - Check `dpkg` if anything nvidia is leftover. I had one remaining one left during test
+
+          dpkg -l | grep nvidia
+        - You may get output that looks something like this (don't expect yours to match):
+
+              $ dpkg -l | grep -i nvidia
+              ii  libnvidia-example1:amd64                                  1.14.3-1                                                       amd64        NVIDIA container runtime library
+              rc  nvidia-example2                                           1.14.3-1                                                       amd64        NVIDIA Container Toolkit Base
+            - Packages mentioned here should only be removed if they mention `nvidia` in its entirety, packages like
+              `nouveau` should be left alone.
+            - Here I would run `sudo apt remove --purge libnvidia-example1:amd64` and repeat for `nvidia-example2`. Copy
+              paste any packages that appear here
+
+    - Autoremove to remove anything else
+
+          sudo apt autoremove
+    - Reboot and in the shell type `nv` and hit tab to make sure there no nvidia executables. At time of testing only
+      one executable came up, and that was `nvidia-detect` which is part of ubuntu so this was fine.
+
+2. Install NVIDIA drivers
   - [Download drivers](https://www.nvidia.com/en-us/drivers/unix/) under "Linux x86_64/AMD64/EM64T", `chmod +x` to make executable and run.
     - When asked about disabling the default nouvaeu drivers, select yes
     - It *may* fail the installation intentionally after disabling nouveau, if so simply reboot
@@ -33,7 +56,7 @@ These steps are adapted for Ubuntu 22.04
         +---------------------------------------------------------------------------------------+
 
 
-2. Install docker
+3. Install docker
   - Recommend installing from docker installation instructions, below is a copy of what was followed from https://docs.docker.com/engine/install/ubuntu/
 during testing
     - Remove conflicting packages:
@@ -69,7 +92,7 @@ during testing
           ii  docker-ce-rootless-extras                                   5:24.0.7-1~ubuntu.22.04~jammy                                  amd64        Rootless support for Docker.
           ii  docker-compose-plugin                                       2.21.0-1~ubuntu.22.04~jammy                                    amd64        Docker Compose (V2) plugin for the Docker CLI.
 
-3. Install nvidia container driver
+4. Install nvidia container driver
    - Below are steps copied from https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#installing-with-apt
    - Install APT repository:
 
