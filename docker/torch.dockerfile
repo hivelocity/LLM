@@ -9,3 +9,4 @@ RUN pip install torch
 RUN pip install git+https://github.com/huggingface/transformers
 
 RUN pip install datasets einops sentencepiece tokenizers protobuf
+RUN pip install accelerate

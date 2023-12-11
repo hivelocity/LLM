@@ -82,7 +82,7 @@ class Prompter:
 def create_model_and_tokenizer(model_path: str, *, half: bool) -> Tuple[AutoModelForCausalLM, AutoTokenizer]:
     tokenizer = AutoTokenizer.from_pretrained(model_path)
 
-    model = AutoModelForCausalLM.from_pretrained(model_path)
+    model = AutoModelForCausalLM.from_pretrained(model_path, device_map=DEVICE)
     if half:
         model = model.half()
     model = model.to(DEVICE)
